@@ -1,0 +1,42 @@
+{% set version = "5.4.0" %}
+
+package:
+  name: ecwjp2-sdk
+  version: {{ version }}
+
+source:
+  path: .
+
+build:
+  number: 1000
+  # For now...
+  skip: True  # [not win]
+  script_env:
+    # SDK directory (containing 'Desktop Read-only' release)
+    #   e.g. "%LOCALAPPDATA%\Hexagon\ERDAS ECW JPEG 2000 SDK 5.4.0[\Desktop Read-Only]"
+    # Set as env var, instead of source:path, since directory is over 5 GB
+    - ECW_JP2_SDK
+
+requirements:
+  host:
+
+test:
+  commands:
+    - if not exist %PREFIX%\\Library\\bin\\NCSEcw.dll exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\lib\\NCSEcw.lib exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\include\\ecwjp2\\NCSECWClient.h exit 1  # [win]
+
+about:
+  home: https://www.hexagongeospatial.com/products/power-portfolio/compression-products/erdas-ecw-jp2-sdk
+  license: Proprietary
+  license_file: ecwjp2-read-only-eula.txt
+  summary: Decompression library for ECW- and JPEG2000-compressed imagery
+  description: |
+    ERDAS ECW/JP2 SDK Desktop Read-only supports efficient ECW/JPEG2000
+    imagery decompression in applications.
+
+  doc_url: https://www.hexagongeospatial.com/products/power-portfolio/compression-products/erdas-ecw-jp2-sdk
+
+extra:
+  recipe-maintainers:
+    - dakcarto
